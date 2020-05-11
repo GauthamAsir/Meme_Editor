@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">New Editor</string>
+    <string name="app_name">Meme Editor</string>
     <string name="add_image">Add Image</string>
     <string name="editor">Editor</string>
     <string name="type_here">Type here…</string>
