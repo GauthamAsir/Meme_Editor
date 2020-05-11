@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/add_image_menu"
+        android:title="@string/add_image"
+        android:icon="@drawable/ic_add_a_photo"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/select_bg_color_menu"
+        android:title="@string/background_color"
+        android:icon="@drawable/ic_color_lens"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/crop_bg_image_menu"
+        android:title="@string/background_color"
+        android:icon="@drawable/ic_crop"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/save_menu"
+        android:title="@string/save"
+        android:icon="@drawable/ic_save"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/share_menu"
+        android:title="@string/share"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="never"/>
+
+</menu>

@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="6dp">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/font_family_chewy"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6dp"
+                android:elevation="6dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_border"
+                    android:layout_margin="2dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_format_size"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dividerColor"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/font_chewy"
+                        style="@android:style/TextAppearance.Large"
+                        android:gravity="center"
+                        android:fontFamily="@font/chewy"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/font_family_lobster"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6dp"
+                android:elevation="6dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_border"
+                    android:layout_margin="2dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_format_size"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dividerColor"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/font_lobster"
+                        style="@android:style/TextAppearance.Large"
+                        android:gravity="center"
+                        android:fontFamily="@font/lobster"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/font_family_open_sans"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6dp"
+                android:elevation="6dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_border"
+                    android:layout_margin="2dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_format_size"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dividerColor"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/font_open_sans"
+                        style="@android:style/TextAppearance.Large"
+                        android:gravity="center"
+                        android:fontFamily="@font/open_sans"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/font_family_oswald"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6dp"
+                android:elevation="6dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_border"
+                    android:layout_margin="2dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_format_size"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dividerColor"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/font_oswald"
+                        style="@android:style/TextAppearance.Large"
+                        android:gravity="center"
+                        android:fontFamily="@font/oswald"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/font_family_roboto"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6dp"
+                android:elevation="6dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_border"
+                    android:layout_margin="2dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_format_size"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dividerColor"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/font_roboto"
+                        style="@android:style/TextAppearance.Large"
+                        android:gravity="center"
+                        android:fontFamily="@font/roboto"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/font_family_ubuntu"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6dp"
+                android:elevation="6dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_border"
+                    android:layout_margin="2dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_format_size"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dividerColor"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/font_ubuntu"
+                        style="@android:style/TextAppearance.Large"
+                        android:gravity="center"
+                        android:fontFamily="@font/ubuntu"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/font_family_default"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="6dp"
+                android:elevation="6dp"
+                app:cardUseCompatPadding="true"
+                android:layout_margin="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@drawable/layout_border"
+                    android:layout_margin="2dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_weight="0.5"
+                        android:layout_height="48dp"
+                        android:gravity="center"
+                        android:src="@drawable/ic_format_size"/>
+
+                    <View
+                        android:layout_width="2dp"
+                        android:layout_height="match_parent"
+                        android:background="@color/dividerColor"/>
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="match_parent"
+                        android:text="@string/default_"
+                        style="@android:style/TextAppearance.Large"
+                        android:gravity="center"
+                        android:fontFamily="?android:attr/fontFamily"
+                        android:layout_gravity="center"
+                        android:background="@android:color/transparent"
+                        android:drawableEnd="@drawable/ic_keyboard_arrow_right"/>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

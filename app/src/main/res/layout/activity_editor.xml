@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditorActivity"
+    android:animateLayoutChanges="true"
+    android:id="@+id/root">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_alignParentTop="true"
+        app:title="@string/editor"
+        app:navigationIcon="?attr/homeAsUpIndicator"/>
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/dividerColor"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"/>
+
+    <LinearLayout
+        android:id="@+id/textInput_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider1"
+        android:orientation="horizontal"
+        android:layout_margin="12dp">
+
+        <EditText
+            android:id="@+id/textInput"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine|textNoSuggestions"
+            android:padding="12dp"
+            android:background="@drawable/text_input_bg"
+            android:hint="@string/type_here"/>
+
+        <ImageView
+            android:id="@+id/add_text"
+            android:layout_width="0dp"
+            android:layout_weight="0.2"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_add_circle"
+            android:padding="4dp"
+            android:background="?android:attr/selectableItemBackground"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/editor_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textInput_layout"
+        android:layout_above="@+id/image_scale_type"
+        android:layout_margin="12dp"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/editor_bg"
+        android:focusableInTouchMode="true">
+
+        <ImageView
+            android:id="@+id/bg_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            android:scaleType="fitCenter"/>
+
+        <RelativeLayout
+            android:id="@+id/delete_layout"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="6dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_delete"
+                android:tint="@color/red_light" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/image_scale_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginEnd="6dp"
+            android:scrollbars="none"
+            android:padding="12dp"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="6dp"
+                android:animateLayoutChanges="true">
+
+                <TextView
+                    android:id="@+id/fitCenter"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fit_center"
+                    style="@android:style/TextAppearance.Medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:background="@drawable/image_style_bg"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+
+                <TextView
+                    android:id="@+id/center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/center"
+                    style="@android:style/TextAppearance.Medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+
+                <TextView
+                    android:id="@+id/centerInside"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/center_inside"
+                    style="@android:style/TextAppearance.Medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+
+                <TextView
+                    android:id="@id/centerCrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/center_crop"
+                    style="@android:style/TextAppearance.Medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+
+                <TextView
+                    android:id="@+id/fitEnd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fit_end"
+                    style="@android:style/TextAppearance.Medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+
+                <TextView
+                    android:id="@+id/fitStart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fit_start"
+                    style="@android:style/TextAppearance.Medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+
+                <TextView
+                    android:id="@+id/fitXy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fit_xy"
+                    style="@android:style/TextAppearance.Medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+
+                <TextView
+                    android:id="@+id/matrix"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/matrix"
+                    style="@android:style/TextAppearance.Medium"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="3dp"/>
+
+            </LinearLayout>
+
+        </HorizontalScrollView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/background_scale_type"
+            android:gravity="center"
+            style="@android:style/TextAppearance.Small"
+            android:layout_marginBottom="6dp"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
