@@ -13,5 +13,6 @@
 
     <color name="red_light">@android:color/holo_red_light</color>
     <color name="red_dark">@android:color/holo_red_dark</color>
+    <color name="ic_launcher_background">@color/white</color>
 
 </resources>
