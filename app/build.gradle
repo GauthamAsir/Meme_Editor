@@ -12,7 +12,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
-        versionName "0.5"
+        versionName "1"
         Date date = new Date()
         String d = date.format('_ddMMYYYY')
         setProperty("archivesBaseName", "Meme_Editor_v$versionName$d")
