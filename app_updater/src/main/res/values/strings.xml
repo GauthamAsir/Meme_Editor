@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="update">Update</string>
+    <string name="file_downloaded">File downloaded</string>
+    <string name="download_error">Download error: </string>
+    <string name="downloading">Downloading</string>
+    <string name="cancel">Cancel</string>
+    <string name="failed">FAILED</string>
+    <string name="error">ERROR</string>
+    <string name="new_update_available">New Update Available</string>
+    <string name="app_updater">App Updater</string>
+    <string name="check_for_new_updates">Check for new updates</string>
+    <string name="no_updates">You are Up-To date. No new updates available</string>
+    <string name="changelogs">Changelogs</string>
+    <string name="appupdater_channel_name">Update notifications</string>
+    <string name="appupdater_channel" translatable="false">appupdater_channel_01</string>
+    <string name="_0">0</string>
+    <string name="_0percent">0%</string>
+    <string name="refresh">Refresh</string>
+</resources>

@@ -14,6 +14,9 @@ import androidx.core.app.ActivityCompat;
 
 import java.util.Objects;
 
+import a.gautham.app_updater.AppUpdater;
+import a.gautham.app_updater.constants.DISPLAY;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int REQUEST_PERMISSIONS = 1234;
@@ -26,6 +29,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        AppUpdater appUpdater = new AppUpdater(this);
+        appUpdater.setType(DISPLAY.DIALOG);
+        appUpdater.setUpGithub("GauthamAsir", "Meme_Editor");
+        appUpdater.start();
+
     }
 
     public void edit(View view) {
