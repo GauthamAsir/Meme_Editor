@@ -41,4 +41,7 @@
     <string name="image_width">Image Width</string>
     <string name="image_height">Image Height</string>
     <string name="by_gautham">by Gautham</string>
+    <string name="no_files_found">No Files Found</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="delete">Delete</string>
 </resources>
