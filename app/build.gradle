@@ -60,4 +60,7 @@ dependencies {
     //App Updater
     implementation project(path: ':app_updater')
 
+    //Explosion Animation
+    implementation 'tyrantgit:explosionfield:1.0.1'
+
 }

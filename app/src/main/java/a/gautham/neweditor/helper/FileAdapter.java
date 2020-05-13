@@ -16,11 +16,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
+import com.google.android.material.card.MaterialCardView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import a.gautham.neweditor.R;
+import tyrantgit.explosionfield.ExplosionField;
 
 public class FileAdapter extends ArrayAdapter<FileModel> {
 
@@ -43,6 +45,7 @@ public class FileAdapter extends ArrayAdapter<FileModel> {
         ImageView share_file = convertView.findViewById(R.id.share_file);
         TextView file_name = convertView.findViewById(R.id.file_name);
         TextView file_size = convertView.findViewById(R.id.file_size);
+        MaterialCardView rootCard = convertView.findViewById(R.id.rootCard);
 
         assert fileModel != null;
         Picasso.get().load(fileModel.getFile()).into(file_thumbnail);
@@ -54,8 +57,10 @@ public class FileAdapter extends ArrayAdapter<FileModel> {
             @Override
             public void onClick(View v) {
 
-                if (fileModel.getFile().exists() && fileModel.getFile().delete())
-                    remove(fileModel);
+                if (fileModel.getFile().exists() && fileModel.getFile().delete()) {
+                    ExplosionField explosionField = new ExplosionField(parent.getContext());
+                    explosionField.explode(rootCard);
+                }
             }
         });
 
