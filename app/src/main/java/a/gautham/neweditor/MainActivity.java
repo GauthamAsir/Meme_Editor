@@ -4,11 +4,15 @@ import android.Manifest;
 import android.app.ActivityManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -24,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    private static final int PICK_IMAGE = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +80,43 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    public void reSize(View view) {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_PICK);
+        startActivityForResult(Intent.createChooser(intent, "Select a source"), PICK_IMAGE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK)
+            return;
+
+        if (data == null)
+            return;
+
+        if (requestCode == PICK_IMAGE) {
+            Uri resultUri = data.getData();
+            if (resultUri != null) {
+                startActivity(new Intent(getApplicationContext(), ReSize.class)
+                        .putExtra("path", getPathFromUri(resultUri)));
+            }
+        }
+
+    }
+
+    private String getPathFromUri(Uri uri) {
+        String[] filePathColumn = {MediaStore.Files.FileColumns.DATA};
+        Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+        cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String Path = cursor.getString(columnIndex);
+        cursor.close();
+        return Path;
     }
 
 }

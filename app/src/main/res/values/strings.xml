@@ -40,8 +40,20 @@
     <string name="share">Share</string>
     <string name="image_width">Image Width</string>
     <string name="image_height">Image Height</string>
-    <string name="by_gautham">by Gautham</string>
+    <string name="by_gautham">By Gautham</string>
     <string name="no_files_found">No Files Found</string>
     <string name="thumbnail">Thumbnail</string>
     <string name="delete">Delete</string>
+    <string name="resize_image">Resize Image</string>
+    <string name="edit_create_memes">Edit/Create Memes</string>
+    <string name="show_edited_files">Show Edited Files</string>
+    <string name="max_height">Max Height</string>
+    <string name="_1080">1080</string>
+    <string name="x">x</string>
+    <string name="image_size">Image Size</string>
+    <string name="_720">720</string>
+    <string name="max_width">Max Width</string>
+    <string name="advance">Advance</string>
+    <string name="crop">Crop</string>
+    <string name="restore">Restore</string>
 </resources>

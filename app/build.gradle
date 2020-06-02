@@ -43,7 +43,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     // Material Themes
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
+    implementation 'com.google.android.material:material:1.2.0-beta01'
 
     //Color Picker
     implementation "com.github.skydoves:colorpickerpreference:2.0.0"
@@ -62,5 +62,12 @@ dependencies {
 
     //Explosion Animation
     implementation 'tyrantgit:explosionfield:1.0.1'
+
+    //Apache Commons to show file size
+    implementation 'commons-io:commons-io:2.6'
+
+    //Glide
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
 }

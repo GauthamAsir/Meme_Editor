@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,13 +15,11 @@
         android:layout_marginTop="50dp"/>
 
     <LinearLayout
+        android:layout_above="@+id/resize_image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="150dp">
+        android:layout_margin="24dp">
 
         <ImageView
             android:layout_width="0dp"
@@ -33,6 +30,7 @@
             android:scaleType="fitCenter"
             android:padding="12dp"
             android:layout_marginEnd="12dp"
+            android:contentDescription="@string/edit_create_memes"
             android:onClick="edit"/>
 
         <ImageView
@@ -44,8 +42,25 @@
             android:scaleType="fitCenter"
             android:padding="12dp"
             android:layout_marginStart="12dp"
-            android:onClick="edited_items"/>
+            android:contentDescription="@string/show_edited_files"
+            android:onClick="edited_items" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/resize_image"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="150dp"
+        android:background="@drawable/main_layout_img_bg2"
+        android:contentDescription="@string/resize_image"
+        android:onClick="reSize"
+        android:padding="12dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_crop" />
 
 </RelativeLayout>

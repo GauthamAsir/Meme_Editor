@@ -6,6 +6,6 @@
     android:layout_height="wrap_content"
     android:paddingStart="12dp"
     android:paddingEnd="12dp"
-    android:textColor="?android:attr/textColorPrimary"
+    android:textColor="@color/white"
     android:textSize="40sp"
     android:focusableInTouchMode="true"/>
