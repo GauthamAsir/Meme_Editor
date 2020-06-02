@@ -1,7 +1,6 @@
 package a.gautham.neweditor;
 
 import android.os.Bundle;
-import android.os.Environment;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -26,7 +25,7 @@ public class EditedFiles extends AppCompatActivity {
     private ProgressBar progressBar;
     private TextView no_files_tv;
     private List<FileModel> list = new ArrayList<>();
-    private File file;
+    private File editedFolder, reSizedFolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,11 +42,10 @@ public class EditedFiles extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator +
-                "Pictures" + File.separator + "GMemes Creator";
+        editedFolder = new File(getExternalFilesDir(null), "EditedFiles");
+        reSizedFolder = new File(getExternalFilesDir(null), "ReSizedImages");
 
-        file = new File(path);
-        if (file.exists())
+        if (editedFolder.exists() || reSizedFolder.exists())
             loadFiles();
         else
             noFiles();
@@ -64,41 +62,38 @@ public class EditedFiles extends AppCompatActivity {
             @Override
             public void run() {
 
-                File[] values = file.listFiles();
+                File[] values1;
+                values1 = reSizedFolder.listFiles();
+                File[] values2;
+                values2 = editedFolder.listFiles();
                 list.clear();
 
-                if (values != null && values.length > 0) {
+                if (values1 != null) {
 
-                    Arrays.sort(values, new Comparator<File>() {
-                        @Override
-                        public int compare(File o1, File o2) {
-                            return Long.compare((o2).lastModified(), (o1).lastModified());
-                        }
-                    });
-                    for (File file1 : values) {
-                        if (!file1.isDirectory()) {
-                            FileModel fileModel = new FileModel(
-                                    file1.getName(),
-                                    FileUtils.byteCountToDisplaySize(file1.length()),
-                                    file1);
-                            list.add(fileModel);
-                        }
+                    if (values1.length > 0) {
+                        addFiles(values1);
                     }
 
+                }
+
+                if (values2 != null) {
+
+                    if (values2.length > 0) {
+                        addFiles(values2);
+                    }
+
+                }
+
+                if (list.size() > 0) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (list.size() > 0) {
-                                FileAdapter fileAdapter = new FileAdapter(EditedFiles.this, list);
-                                listView.setAdapter(fileAdapter);
-                                progressBar.setVisibility(View.GONE);
-                            } else {
-                                noFiles();
-                            }
-
+                            FileAdapter fileAdapter = new FileAdapter(EditedFiles.this, list);
+                            listView.setAdapter(fileAdapter);
+                            fileAdapter.notifyDataSetChanged();
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
-
                 } else {
                     runOnUiThread(new Runnable() {
                         @Override
@@ -106,6 +101,26 @@ public class EditedFiles extends AppCompatActivity {
                             noFiles();
                         }
                     });
+                }
+
+            }
+
+            private void addFiles(File[] filesArray) {
+
+                Arrays.sort(filesArray, new Comparator<File>() {
+                    @Override
+                    public int compare(File o1, File o2) {
+                        return Long.compare((o2).lastModified(), (o1).lastModified());
+                    }
+                });
+                for (File file1 : filesArray) {
+                    if (!file1.isDirectory()) {
+                        FileModel fileModel = new FileModel(
+                                file1.getName(),
+                                FileUtils.byteCountToDisplaySize(file1.length()),
+                                file1);
+                        list.add(fileModel);
+                    }
                 }
 
             }

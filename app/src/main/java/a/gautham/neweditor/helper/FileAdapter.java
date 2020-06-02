@@ -22,7 +22,6 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import a.gautham.neweditor.R;
-import tyrantgit.explosionfield.ExplosionField;
 
 public class FileAdapter extends ArrayAdapter<FileModel> {
 
@@ -58,8 +57,7 @@ public class FileAdapter extends ArrayAdapter<FileModel> {
             public void onClick(View v) {
 
                 if (fileModel.getFile().exists() && fileModel.getFile().delete()) {
-                    ExplosionField explosionField = new ExplosionField(parent.getContext());
-                    explosionField.explode(rootCard);
+                    remove(fileModel);
                 }
             }
         });

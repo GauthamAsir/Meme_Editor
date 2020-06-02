@@ -1,16 +1,5 @@
 package a.gautham.neweditor;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.FileProvider;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -48,6 +37,17 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
@@ -209,18 +209,14 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
         builder.setPositiveButton("JPEG", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String f = filename;
-                f = f + ".jpeg";
-                saveImage("GMemes Creator", f, Bitmap.CompressFormat.JPEG);
+                saveImage(filename + ".jpeg", Bitmap.CompressFormat.JPEG);
             }
         });
 
         builder.setNeutralButton("PNG", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String f = filename;
-                f = f + ".png";
-                saveImage("GMemes Creator", f, Bitmap.CompressFormat.PNG);
+                saveImage(filename + ".png", Bitmap.CompressFormat.PNG);
             }
         });
 
@@ -232,7 +228,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
 
     }
 
-    private String saveImage(String folderName, String imageName, final Bitmap.CompressFormat format) {
+    private String saveImage(String imageName, final Bitmap.CompressFormat format) {
 
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Processing");
@@ -240,16 +236,14 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
 
         String selectedOutputPath = "";
         if (isSDCARDMounted()) {
-            File mediaStorageDir = new File(
-                    Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), folderName);
-            // Create a storage directory if it does not exist
-            if (!mediaStorageDir.exists()) {
-                if (!mediaStorageDir.mkdirs()) {
-                    Log.d(TAG, "Failed to create directory");
+            File folder = new File(getExternalFilesDir(null), "EditedFiles");
+            if (!folder.exists()) {
+                if (!folder.mkdirs()) {
+                    Log.d("EditorActivity: ", "Failed to Create to Folder");
                 }
             }
             // Create a media file name
-            selectedOutputPath = mediaStorageDir.getPath() + File.separator + imageName;
+            selectedOutputPath = folder.getPath() + File.separator + imageName;
             Log.d(TAG, "selected camera path " + selectedOutputPath);
             final File file = new File(selectedOutputPath);
             try {
@@ -263,7 +257,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
                 dialog.dismiss();
                 editing = false;
 
-                final Snackbar snackbar = Snackbar.make(root,"Saved To /Pictures",Snackbar.LENGTH_LONG);
+                final Snackbar snackbar = Snackbar.make(root, "File Saved", Snackbar.LENGTH_LONG);
                 snackbar.show();
                 snackbar.setAction("Share", new View.OnClickListener() {
                     @Override

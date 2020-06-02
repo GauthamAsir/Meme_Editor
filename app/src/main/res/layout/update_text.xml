@@ -516,7 +516,7 @@
                                 android:layout_width="0dp"
                                 android:layout_weight="2"
                                 android:layout_height="wrap_content"
-                                android:text="@string/start_padding"
+                                android:text="@string/bottom_padding"
                                 android:textSize="18sp"
                                 android:gravity="center"
                                 android:drawableStart="@drawable/ic_format_size"/>

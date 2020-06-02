@@ -56,4 +56,5 @@
     <string name="advance">Advance</string>
     <string name="crop">Crop</string>
     <string name="restore">Restore</string>
+    <string name="bottom_padding">Bottom Padding</string>
 </resources>
