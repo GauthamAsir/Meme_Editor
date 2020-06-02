@@ -57,4 +57,7 @@
     <string name="crop">Crop</string>
     <string name="restore">Restore</string>
     <string name="bottom_padding">Bottom Padding</string>
+    <string name="add_text">Add Text</string>
+    <string name="text_style">Text Style</string>
+    <string name="text_background_color">Text Background Color</string>
 </resources>

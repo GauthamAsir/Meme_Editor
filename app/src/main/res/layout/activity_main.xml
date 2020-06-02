@@ -12,7 +12,8 @@
         android:layout_alignParentTop="true"
         android:text="@string/by_gautham"
         android:gravity="center"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        tools:targetApi="o" />
 
     <LinearLayout
         android:layout_above="@+id/resize_image"

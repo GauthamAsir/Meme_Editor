@@ -48,8 +48,10 @@
                 android:inputType="textMultiLine"
                 android:textSize="18sp"
                 android:padding="12dp"
+                android:layout_marginEnd="12dp"
+                android:autofillHints="@null"
                 android:layout_marginStart="12dp"
-                android:layout_marginEnd="12dp"/>
+                android:labelFor="@+id/textInput_update" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -139,6 +141,7 @@
                         android:scaleType="centerInside"
                         android:layout_weight="1"
                         tools:ignore="NestedWeights"
+                        android:contentDescription="@string/text_style"
                         android:src="@drawable/ic_format_clear"/>
 
                     <ImageView
@@ -148,6 +151,7 @@
                         android:scaleType="centerInside"
                         android:layout_weight="1"
                         tools:ignore="NestedWeights"
+                        android:contentDescription="@string/text_style"
                         android:src="@drawable/ic_format_bold"/>
 
                     <ImageView
@@ -157,6 +161,7 @@
                         android:scaleType="centerInside"
                         android:layout_weight="1"
                         tools:ignore="NestedWeights"
+                        android:contentDescription="@string/text_style"
                         android:src="@drawable/ic_format_italic"/>
 
                     <ImageView
@@ -166,6 +171,7 @@
                         android:scaleType="centerInside"
                         android:layout_weight="1"
                         tools:ignore="NestedWeights"
+                        android:contentDescription="@string/text_style"
                         android:src="@drawable/ic_format_underlined"/>
 
                 </LinearLayout>
@@ -241,7 +247,8 @@
                         android:tint="@color/white"
                         android:layout_height="32dp"
                         android:scaleType="fitCenter"
-                        android:layout_margin="6dp"/>
+                        android:layout_margin="6dp"
+                        android:contentDescription="@string/text_background" />
 
                     <ImageView
                         android:id="@+id/text_background_color_bt"
@@ -251,7 +258,8 @@
                         android:tint="@color/white"
                         android:layout_height="32dp"
                         android:scaleType="fitCenter"
-                        android:layout_margin="6dp"/>
+                        android:layout_margin="6dp"
+                        android:contentDescription="@string/text_background_color" />
 
                 </LinearLayout>
 

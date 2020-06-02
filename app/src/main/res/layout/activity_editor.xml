@@ -40,6 +40,7 @@
             android:layout_height="wrap_content"
             android:inputType="textMultiLine|textNoSuggestions"
             android:padding="12dp"
+            android:autofillHints="@null"
             android:background="@drawable/text_input_bg"
             android:hint="@string/type_here"/>
 
@@ -50,6 +51,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/ic_add_circle"
             android:padding="4dp"
+            android:contentDescription="@string/add_text"
             android:background="?android:attr/selectableItemBackground"/>
 
     </LinearLayout>
@@ -70,6 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="4dp"
+            android:contentDescription="@string/image"
             android:scaleType="fitCenter"/>
 
         <RelativeLayout
@@ -85,6 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_delete"
+                android:contentDescription="@string/delete"
                 android:tint="@color/red_light" />
 
         </RelativeLayout>

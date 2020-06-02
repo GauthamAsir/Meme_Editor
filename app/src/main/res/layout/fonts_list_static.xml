@@ -38,6 +38,7 @@
                         android:layout_weight="0.5"
                         android:layout_height="48dp"
                         android:gravity="center"
+                        android:contentDescription="@string/select_font_style"
                         android:src="@drawable/ic_format_size"/>
 
                     <View
@@ -83,6 +84,7 @@
                         android:layout_weight="0.5"
                         android:layout_height="48dp"
                         android:gravity="center"
+                        android:contentDescription="@string/select_font_style"
                         android:src="@drawable/ic_format_size"/>
 
                     <View
@@ -128,6 +130,7 @@
                         android:layout_weight="0.5"
                         android:layout_height="48dp"
                         android:gravity="center"
+                        android:contentDescription="@string/select_font_style"
                         android:src="@drawable/ic_format_size"/>
 
                     <View
@@ -173,6 +176,7 @@
                         android:layout_weight="0.5"
                         android:layout_height="48dp"
                         android:gravity="center"
+                        android:contentDescription="@string/select_font_style"
                         android:src="@drawable/ic_format_size"/>
 
                     <View
@@ -218,6 +222,7 @@
                         android:layout_weight="0.5"
                         android:layout_height="48dp"
                         android:gravity="center"
+                        android:contentDescription="@string/select_font_style"
                         android:src="@drawable/ic_format_size"/>
 
                     <View
@@ -263,6 +268,7 @@
                         android:layout_weight="0.5"
                         android:layout_height="48dp"
                         android:gravity="center"
+                        android:contentDescription="@string/select_font_style"
                         android:src="@drawable/ic_format_size"/>
 
                     <View
@@ -308,6 +314,7 @@
                         android:layout_weight="0.5"
                         android:layout_height="48dp"
                         android:gravity="center"
+                        android:contentDescription="@string/select_font_style"
                         android:src="@drawable/ic_format_size"/>
 
                     <View
