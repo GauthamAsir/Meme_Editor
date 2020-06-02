@@ -2,6 +2,8 @@ package a.gautham.neweditor;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 
 import com.bumptech.glide.Glide;
@@ -42,6 +45,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class ReSize extends AppCompatActivity implements View.OnClickListener {
@@ -92,15 +96,12 @@ public class ReSize extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        File file = new File(Objects.requireNonNull(getExternalFilesDir(null))
-                .getAbsolutePath() + File.separator +
-                "ReSizedImages" + File.separator + name + ".jpg");
-        if (!file.exists()) {
+        if (!getSavedImageFile().exists()) {
             Toast.makeText(this, "File does not exists", Toast.LENGTH_SHORT).show();
             return;
         }
         Glide.with(this)
-                .load(Uri.parse("file://" + file.getAbsolutePath()))
+                .load(Uri.parse("file://" + getSavedImageFile().getAbsolutePath()))
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
@@ -154,9 +155,7 @@ public class ReSize extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        File file = new File(getExternalFilesDir(null),
-                "ReSizedImages/" + name + ".jpg");
-        image_size.setText(FileUtils.byteCountToDisplaySize(file.length()));
+        image_size.setText(FileUtils.byteCountToDisplaySize(getSavedImageFile().length()));
 
     }
 
@@ -239,12 +238,37 @@ public class ReSize extends AppCompatActivity implements View.OnClickListener {
         return true;
     }
 
+    private File getSavedImageFile() {
+        return new File(Objects.requireNonNull(getExternalFilesDir(null))
+                .getAbsolutePath() + File.separator +
+                "ReSizedImages" + File.separator + name + ".jpg");
+    }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {
             case R.string.share:
-                Toast.makeText(this, "HEY", Toast.LENGTH_SHORT).show();
+
+                Uri uri = FileProvider.getUriForFile(
+                        getApplicationContext(),
+                        "a.gautham.neweditor.provider",
+                        getSavedImageFile());
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("image/jpg");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                Intent chooser = Intent.createChooser(shareIntent, "Share image");
+                List<ResolveInfo> resInfoList = getPackageManager()
+                        .queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+
+                for (ResolveInfo resolveInfo : resInfoList) {
+                    String packageName = resolveInfo.activityInfo.packageName;
+                    grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                }
+
+                startActivity(chooser);
+
                 return true;
             case R.string.save:
                 compressImage(path);
@@ -254,10 +278,7 @@ public class ReSize extends AppCompatActivity implements View.OnClickListener {
             case R.string.crop:
 
                 if (name != null) {
-                    File file = new File(Objects.requireNonNull(getExternalFilesDir(null))
-                            .getAbsolutePath() + File.separator +
-                            "ReSizedImages" + File.separator + name + ".jpg");
-                    CropImage.activity(Uri.fromFile(file))
+                    CropImage.activity(Uri.fromFile(getSavedImageFile()))
                             .start(this);
                 } else {
                     CropImage.activity(Uri.fromFile(new File(path)))
@@ -270,10 +291,7 @@ public class ReSize extends AppCompatActivity implements View.OnClickListener {
                 path = backupPath;
 
                 if (name != null) {
-                    File file = new File(Objects.requireNonNull(getExternalFilesDir(null))
-                            .getAbsolutePath() + File.separator +
-                            "ReSizedImages" + File.separator + name + ".jpg");
-                    if (!file.delete()) {
+                    if (!getSavedImageFile().delete()) {
                         Toast.makeText(this, "Error Restoring Image", Toast.LENGTH_SHORT).show();
                     }
                     name = null;
