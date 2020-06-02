@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -37,6 +36,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -51,7 +51,6 @@ import androidx.core.graphics.drawable.DrawableCompat;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
-import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 import com.squareup.picasso.Picasso;
@@ -70,9 +69,8 @@ import a.gautham.neweditor.helper.TextStyleBuilder;
 public class EditorActivity extends AppCompatActivity implements View.OnTouchListener, View.OnClickListener {
 
     private EditText textInput;
-    private ImageView add_text, bg_image;
-    private View addTextRootView, addImageRootView;
-    private HashMap<View,TextStyleBuilder> addedTextViews = new HashMap<>();
+    private ImageView bg_image;
+    private HashMap<View, TextStyleBuilder> addedTextViews = new HashMap<>();
     private List<View> addedViews = new ArrayList<>();
     private Context context;
     private RelativeLayout editor_container, delete_layout;
@@ -103,12 +101,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         textInput = findViewById(R.id.textInput);
         editor_container = findViewById(R.id.editor_container);
@@ -139,7 +132,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
         outRect = new Rect(delete_layout.getLeft(), delete_layout.getTop(),
                 delete_layout.getRight(), delete_layout.getBottom());
 
-        add_text = findViewById(R.id.add_text);
+        ImageView add_text = findViewById(R.id.add_text);
         add_text.setOnClickListener(this);
 
     }
@@ -149,24 +142,18 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.editor_menu, menu);
 
-        if(menu instanceof MenuBuilder){
+        if (menu instanceof MenuBuilder) {
             MenuBuilder m = (MenuBuilder) menu;
             m.setOptionalIconsVisible(true);
         }
 
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                final  View view = findViewById(R.id.select_bg_color_menu);
-                if (view!=null){
-                    view.setOnLongClickListener(new View.OnLongClickListener() {
-                        @Override
-                        public boolean onLongClick(View v) {
-                            editor_container.setBackground(ContextCompat.getDrawable(context,R.drawable.editor_bg));
-                            return true;
-                        }
-                    });
-                }
+        new Handler().post(() -> {
+            final View view = findViewById(R.id.select_bg_color_menu);
+            if (view != null) {
+                view.setOnLongClickListener(v -> {
+                    editor_container.setBackground(ContextCompat.getDrawable(context, R.drawable.editor_bg));
+                    return true;
+                });
             }
         });
 
@@ -189,11 +176,10 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
                 saveImageDialog(filename);
                 return true;
             case R.id.crop_bg_image_menu:
-                if (selectBg){
-                    if (bg_image.getTag().toString()!=null){
-                        CropImage.activity(Uri.parse(bg_image.getTag().toString()))
-                                .start(this);
-                    }
+                if (selectBg) {
+                    bg_image.getTag().toString();
+                    CropImage.activity(Uri.parse(bg_image.getTag().toString()))
+                            .start(this);
                 }
                 return true;
             default:
@@ -206,35 +192,26 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Select a format");
 
-        builder.setPositiveButton("JPEG", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                saveImage(filename + ".jpeg", Bitmap.CompressFormat.JPEG);
-            }
-        });
+        builder.setPositiveButton("JPEG", (dialog, which) ->
+                saveImage(filename + ".jpeg", Bitmap.CompressFormat.JPEG));
 
-        builder.setNeutralButton("PNG", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                saveImage(filename + ".png", Bitmap.CompressFormat.PNG);
-            }
-        });
+        builder.setNeutralButton("PNG", (dialog, which) ->
+                saveImage(filename + ".png", Bitmap.CompressFormat.PNG));
 
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
-        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor(context,R.color.colorAccent));
+        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
+        alertDialog.getButton(AlertDialog.BUTTON_NEUTRAL).setTextColor(ContextCompat.getColor(context, R.color.colorAccent));
 
     }
 
-    private String saveImage(String imageName, final Bitmap.CompressFormat format) {
+    private void saveImage(String imageName, final Bitmap.CompressFormat format) {
 
         final ProgressDialog dialog = new ProgressDialog(this);
         dialog.setMessage("Processing");
         dialog.show();
 
-        String selectedOutputPath = "";
         if (isSDCARDMounted()) {
             File folder = new File(getExternalFilesDir(null), "EditedFiles");
             if (!folder.exists()) {
@@ -243,7 +220,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
                 }
             }
             // Create a media file name
-            selectedOutputPath = folder.getPath() + File.separator + imageName;
+            String selectedOutputPath = folder.getPath() + File.separator + imageName;
             Log.d(TAG, "selected camera path " + selectedOutputPath);
             final File file = new File(selectedOutputPath);
             try {
@@ -259,20 +236,16 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
 
                 final Snackbar snackbar = Snackbar.make(root, "File Saved", Snackbar.LENGTH_LONG);
                 snackbar.show();
-                snackbar.setAction("Share", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                snackbar.setAction("Share", v -> {
 
-                        shareFile(file, format);
-                        snackbar.dismiss();
-                    }
+                    shareFile(file, format);
+                    snackbar.dismiss();
                 });
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return selectedOutputPath;
 
     }
 
@@ -336,41 +309,32 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
         alertDialog = builder.create();
         alertDialog.show();
 
-        add_bg_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        add_bg_image.setOnClickListener(v -> {
 
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select a source"), PICK_IMAGE_BG);
-                selectBg = true;
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_PICK);
+            startActivityForResult(Intent.createChooser(intent, "Select a source"), PICK_IMAGE_BG);
+            selectBg = true;
 
-            }
         });
 
-        add_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        add_image.setOnClickListener(v -> {
 
-                Intent intent = new Intent();
-                intent.setType("image/*");
-                intent.setAction(Intent.ACTION_PICK);
-                startActivityForResult(Intent.createChooser(intent, "Select a source"), PICK_IMAGE);
-                selectBg = false;
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_PICK);
+            startActivityForResult(Intent.createChooser(intent, "Select a source"), PICK_IMAGE);
+            selectBg = false;
 
-            }
         });
 
-        remove_bg_image.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                bg_image.setBackground(null);
-                bg_image.setVisibility(View.GONE);
-                alertDialog.dismiss();
-                ImageScaleLayout(false);
-                selectBg = false;
-            }
+        remove_bg_image.setOnClickListener(v -> {
+            bg_image.setBackground(null);
+            bg_image.setVisibility(View.GONE);
+            alertDialog.dismiss();
+            ImageScaleLayout(false);
+            selectBg = false;
         });
 
     }
@@ -391,10 +355,15 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result != null ? result.getUri() : null;
 
-                if (selectBg){
+                if (selectBg) {
                     Picasso.get().load(resultUri).into(bg_image);
-                    bg_image.setTag(resultUri.toString());
-                    ImageScaleLayout(true);
+                    if (resultUri != null) {
+                        bg_image.setTag(resultUri.toString());
+                        ImageScaleLayout(true);
+                        return;
+                    }
+                    Toast.makeText(context, "Something went wrong while cropping image", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 }else {
                     AddImage(resultUri);
                 }
@@ -428,19 +397,10 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
                 .setTitle("Select a color")
                 .setPreferenceName("MyColorPickerDialog")
                 .setPositiveButton("Confirm",
-                        new ColorEnvelopeListener() {
-                            @Override
-                            public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
-                                editor_container.setBackgroundColor(envelope.getColor());
-                            }
-                        })
-                .setNegativeButton("Cancel",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
+                        (ColorEnvelopeListener) (envelope, fromUser) ->
+                                editor_container.setBackgroundColor(envelope.getColor()))
+                .setNegativeButton("Cancel", (dialogInterface, i) ->
+                        dialogInterface.dismiss())
                 .attachAlphaSlideBar(true)
                 .attachBrightnessSlideBar(true)
                 .show();
@@ -454,7 +414,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        addTextRootView = inflater.inflate(R.layout.textview, null);
+        View addTextRootView = inflater.inflate(R.layout.textview, null);
         TextView addTextView = addTextRootView.findViewById(R.id.textView);
         addTextView.setGravity(Gravity.CENTER);
         addTextView.setText(text);
@@ -477,7 +437,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         assert inflater != null;
-        addImageRootView = inflater.inflate(R.layout.imageview, null);
+        View addImageRootView = inflater.inflate(R.layout.imageview, null);
         ImageView imageView = addImageRootView.findViewById(R.id.image_iv);
         Picasso.get().load(uri).into(imageView);
         addImageRootView.setOnTouchListener(this);
@@ -496,6 +456,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
         if (view == null) {
             view = new View(context);
         }
+        assert imm != null;
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
@@ -578,11 +539,10 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
 
     private int _xDelta;
     private int _yDelta;
-    private int _rightMargin;
-    private int _bottomMargin;
     private float mPrevRawX;
     private float mPrevRawY;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouch(View view, MotionEvent event) {
 
@@ -677,7 +637,16 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
 
         setBgNullImgStyle(views);
 
-        switch (imageView.getScaleType()){
+        assert fitCenter != null;
+        assert center != null;
+        assert centerInside != null;
+        assert centerCrop != null;
+        assert fitEnd != null;
+        assert fitStart != null;
+        assert fitXy != null;
+        assert matrix != null;
+
+        switch (imageView.getScaleType()) {
             case FIT_CENTER:
                 setBgStyle(fitCenter);
                 break;
@@ -704,102 +673,84 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
                 break;
         }
 
-        fitCenter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        fitCenter.setOnClickListener(v -> {
 
-                setBgNullImgStyle(views);
-                setBgStyle(fitCenter);
-                imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            setBgNullImgStyle(views);
+            setBgStyle(fitCenter);
+            imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
 
-            }
         });
 
-        center.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        center.setOnClickListener(v -> {
 
-                setBgNullImgStyle(views);
-                setBgStyle(center);
-                imageView.setScaleType(ImageView.ScaleType.CENTER);
+            setBgNullImgStyle(views);
+            setBgStyle(center);
+            imageView.setScaleType(ImageView.ScaleType.CENTER);
 
-            }
         });
 
-        centerInside.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        centerInside.setOnClickListener(v -> {
 
-                setBgNullImgStyle(views);
-                setBgStyle(centerInside);
-                imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+            setBgNullImgStyle(views);
+            setBgStyle(centerInside);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 
-            }
         });
 
-        centerCrop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        centerCrop.setOnClickListener(v -> {
 
-                setBgNullImgStyle(views);
-                setBgStyle(centerCrop);
-                imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            setBgNullImgStyle(views);
+            setBgStyle(centerCrop);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            }
         });
 
-        fitEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        fitEnd.setOnClickListener(v -> {
 
-                setBgNullImgStyle(views);
-                setBgStyle(fitEnd);
-                imageView.setScaleType(ImageView.ScaleType.FIT_END);
+            setBgNullImgStyle(views);
+            setBgStyle(fitEnd);
+            imageView.setScaleType(ImageView.ScaleType.FIT_END);
 
-            }
         });
 
-        fitStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        fitStart.setOnClickListener(v -> {
 
-                setBgNullImgStyle(views);
-                setBgStyle(fitStart);
-                imageView.setScaleType(ImageView.ScaleType.FIT_START);
+            setBgNullImgStyle(views);
+            setBgStyle(fitStart);
+            imageView.setScaleType(ImageView.ScaleType.FIT_START);
 
-            }
         });
 
-        fitXy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        fitXy.setOnClickListener(v -> {
 
-                setBgNullImgStyle(views);
-                setBgStyle(fitXy);
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+            setBgNullImgStyle(views);
+            setBgStyle(fitXy);
+            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 
-            }
         });
 
-        matrix.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        matrix.setOnClickListener(v -> {
 
-                setBgNullImgStyle(views);
-                setBgStyle(matrix);
-                imageView.setScaleType(ImageView.ScaleType.MATRIX);
+            setBgNullImgStyle(views);
+            setBgStyle(matrix);
+            imageView.setScaleType(ImageView.ScaleType.MATRIX);
 
-            }
         });
 
         int imageWidth = imageView.getWidth();
         int imageHeight = imageView.getHeight();
+
+        assert seekbar_height != null;
+        assert seekbar_width != null;
 
         seekbar_height.setMax(layoutHeight);
         seekbar_width.setMax(layoutWidth);
 
         seekbar_height.setProgress(imageHeight);
         seekbar_width.setProgress(imageWidth);
+
+        assert seekbar_height_value != null;
+        assert seekbar_width_value != null;
 
         seekbar_height_value.setText(String.valueOf(imageHeight));
         seekbar_width_value.setText(String.valueOf(imageWidth));
@@ -911,35 +862,69 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
         boolean hasBg = textStyleBuilder.isHasBg();
         int paintFlags = textStyleBuilder.getPaintflags();
 
+        assert textInput_update != null;
         textInput_update.setText(t);
 
+        assert color_box != null;
         setColor_box(tColor, color_box);
 
+        assert preview != null;
         preview.setPadding(padding[0],padding[1],padding[2],padding[3]);
 
         preview.setText(t);
         preview.setTextSize(tSize);
         preview.setTypeface(tTypeface);
         preview.setTextColor(tColor);
-        if (hasBg){
+        if (hasBg) {
             addTextBg(bgColor, preview, textView);
         }
         preview.setPaintFlags(paintFlags);
 
+        assert text_size_value != null;
+        assert seekbar != null;
         text_size_value.setText(String.valueOf(tSize));
         seekbar.setProgress(tSize);
 
-        if (normalText) selected(text_style_normal);
-        else deselected(text_style_normal);
+        assert text_style_normal != null;
+        assert text_style_bold != null;
+        assert text_style_italic != null;
+        assert text_style_underline != null;
 
-        if (boldText) selected(text_style_bold);
-        else deselected(text_style_bold);
 
-        if (italicText) selected(text_style_italic);
-        else deselected(text_style_italic);
+        if (normalText)
+            selected(text_style_normal);
+        else
+            deselected(text_style_normal);
 
-        if (underLineText) selected(text_style_underline);
-        else deselected(text_style_underline);
+        if (boldText)
+            selected(text_style_bold);
+        else
+            deselected(text_style_bold);
+
+        if (italicText)
+            selected(text_style_italic);
+        else
+            deselected(text_style_italic);
+
+        if (underLineText)
+            selected(text_style_underline);
+        else
+            deselected(text_style_underline);
+
+        assert text_padding_seekbar != null;
+        assert text_padding_value != null;
+
+        assert text_padding_seekbar_start != null;
+        assert text_padding_value_start != null;
+
+        assert text_padding_seekbar_top != null;
+        assert text_padding_value_top != null;
+
+        assert text_padding_seekbar_end != null;
+        assert text_padding_value_end != null;
+
+        assert text_padding_seekbar_bottom != null;
+        assert text_padding_value_bottom != null;
 
         text_padding_seekbar.setProgress(padding[0]);
         text_padding_value.setText(String.valueOf(padding[0]));
@@ -996,6 +981,7 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
             }
         });
 
+        assert select_font_family != null;
         select_font_family.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1016,61 +1002,19 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
                 fontFamilyDialog = fontFamilyBuilder.create();
                 fontFamilyDialog.show();
 
-                font_family_chewy.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                font_family_chewy.setOnClickListener(v17 -> setFont(R.font.chewy));
 
-                        setFont(R.font.chewy);
-                    }
-                });
+                font_family_lobster.setOnClickListener(v12 -> setFont(R.font.lobster));
 
-                font_family_lobster.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                font_family_open_sans.setOnClickListener(v1 -> setFont(R.font.open_sans));
 
-                        setFont(R.font.lobster);
-                    }
-                });
+                font_family_oswald.setOnClickListener(v14 -> setFont(R.font.oswald));
 
-                font_family_open_sans.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                font_family_roboto.setOnClickListener(v13 -> setFont(R.font.roboto));
 
-                        setFont(R.font.open_sans);
-                    }
-                });
+                font_family_ubuntu.setOnClickListener(v15 -> setFont(R.font.ubuntu));
 
-                font_family_oswald.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        setFont(R.font.oswald);
-                    }
-                });
-
-                font_family_roboto.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        setFont(R.font.roboto);
-                    }
-                });
-
-                font_family_ubuntu.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        setFont(R.font.ubuntu);
-                    }
-                });
-
-                font_family_default.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        setFont(R.font.open_sans);
-                    }
-                });
+                font_family_default.setOnClickListener(v16 -> setFont(R.font.open_sans));
 
             }
 
@@ -1085,259 +1029,217 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
             }
         });
 
-        text_style_normal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (boldText){
-                    boldText = false;
-                    italicText = false;
-                    underLineText = false;
-                    normalText = true;
-                    selected(text_style_normal);
-                    deselected(text_style_bold);
-                    deselected(text_style_italic);
-                    deselected(text_style_underline);
-                    if (fontFamilyChanged){
-                        preview.setTypeface(typeface, Typeface.NORMAL);
-                        textView.setTypeface(typeface, Typeface.NORMAL);
-                    }else {
-                        preview.setTypeface(null, Typeface.NORMAL);
-                        textView.setTypeface(null, Typeface.NORMAL);
-                    }
-                    preview.setPaintFlags(0);
-                    textView.setPaintFlags(0);
-                    return;
-                }
-
-                if (fontFamilyChanged){
+        text_style_normal.setOnClickListener(v -> {
+            if (boldText) {
+                boldText = false;
+                italicText = false;
+                underLineText = false;
+                normalText = true;
+                selected(text_style_normal);
+                deselected(text_style_bold);
+                deselected(text_style_italic);
+                deselected(text_style_underline);
+                if (fontFamilyChanged) {
                     preview.setTypeface(typeface, Typeface.NORMAL);
                     textView.setTypeface(typeface, Typeface.NORMAL);
-                }else {
-                    textView.setTypeface(null, Typeface.NORMAL);
+                } else {
                     preview.setTypeface(null, Typeface.NORMAL);
+                    textView.setTypeface(null, Typeface.NORMAL);
                 }
-                selected(text_style_normal);
-                normalText = true;
-
+                preview.setPaintFlags(0);
+                textView.setPaintFlags(0);
+                return;
             }
+
+            if (fontFamilyChanged) {
+                preview.setTypeface(typeface, Typeface.NORMAL);
+                textView.setTypeface(typeface, Typeface.NORMAL);
+            } else {
+                textView.setTypeface(null, Typeface.NORMAL);
+                preview.setTypeface(null, Typeface.NORMAL);
+            }
+            selected(text_style_normal);
+            normalText = true;
+
         });
 
-        text_style_bold.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        text_style_bold.setOnClickListener(v -> {
 
-                if (boldText){
-                    boldText = false;
-                    deselected(text_style_bold);
-                    if (italicText) {
-                        preview.setTypeface(null, Typeface.ITALIC);
-                        textView.setTypeface(null, Typeface.ITALIC);
-                    } else {
-                        preview.setTypeface(null, Typeface.NORMAL);
-                        textView.setTypeface(null, Typeface.NORMAL);
-                    }
-                    return;
+            if (boldText) {
+                boldText = false;
+                deselected(text_style_bold);
+                if (italicText) {
+                    preview.setTypeface(null, Typeface.ITALIC);
+                    textView.setTypeface(null, Typeface.ITALIC);
+                } else {
+                    preview.setTypeface(null, Typeface.NORMAL);
+                    textView.setTypeface(null, Typeface.NORMAL);
                 }
+                return;
+            }
 
-                boldText = true;
+            boldText = true;
 
-                if (normalText){
-                    normalText = false;
-                    selected(text_style_bold);
-                    deselected(text_style_normal);
-                    preview.setTypeface(preview.getTypeface(), Typeface.BOLD);
-                    textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
-                    return;
-                }
-
-                if (italicText){
-                    preview.setTypeface(preview.getTypeface(), Typeface.BOLD_ITALIC);
-                    textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
-                    selected(text_style_bold);
-                    return;
-                }
-
+            if (normalText) {
+                normalText = false;
+                selected(text_style_bold);
+                deselected(text_style_normal);
                 preview.setTypeface(preview.getTypeface(), Typeface.BOLD);
                 textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+                return;
+            }
+
+            if (italicText) {
+                preview.setTypeface(preview.getTypeface(), Typeface.BOLD_ITALIC);
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
                 selected(text_style_bold);
+                return;
             }
+
+            preview.setTypeface(preview.getTypeface(), Typeface.BOLD);
+            textView.setTypeface(textView.getTypeface(), Typeface.BOLD);
+            selected(text_style_bold);
         });
 
-        text_style_italic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        text_style_italic.setOnClickListener(v -> {
 
-                if (italicText){
-                    italicText = false;
-                    deselected(text_style_italic);
-                    if (boldText) {
-                        preview.setTypeface(null, Typeface.BOLD);
-                        textView.setTypeface(null, Typeface.BOLD);
-                    } else {
-                        preview.setTypeface(null, Typeface.NORMAL);
-                        textView.setTypeface(null, Typeface.NORMAL);
-                    }
-                    return;
-                }
-
-                italicText = true;
-
-                if (boldText){
-                    preview.setTypeface(preview.getTypeface(), Typeface.BOLD_ITALIC);
-                    textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
-                    selected(text_style_italic);
-                    return;
-                }
-
-                preview.setTypeface(preview.getTypeface(), Typeface.ITALIC);
-                textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
-                selected(text_style_italic);
-            }
-        });
-
-        text_style_underline.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (underLineText) {
-                    preview.setPaintFlags(0);
-                    textView.setPaintFlags(0);
-                    deselected(text_style_underline);
-                    underLineText = false;
+            if (italicText) {
+                italicText = false;
+                deselected(text_style_italic);
+                if (boldText) {
+                    preview.setTypeface(null, Typeface.BOLD);
+                    textView.setTypeface(null, Typeface.BOLD);
                 } else {
-                    preview.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-                    textView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
-                    selected(text_style_underline);
-                    underLineText = true;
+                    preview.setTypeface(null, Typeface.NORMAL);
+                    textView.setTypeface(null, Typeface.NORMAL);
                 }
+                return;
+            }
+
+            italicText = true;
+
+            if (boldText) {
+                preview.setTypeface(preview.getTypeface(), Typeface.BOLD_ITALIC);
+                textView.setTypeface(textView.getTypeface(), Typeface.BOLD_ITALIC);
+                selected(text_style_italic);
+                return;
+            }
+
+            preview.setTypeface(preview.getTypeface(), Typeface.ITALIC);
+            textView.setTypeface(textView.getTypeface(), Typeface.ITALIC);
+            selected(text_style_italic);
+        });
+
+        text_style_underline.setOnClickListener(v -> {
+
+            if (underLineText) {
+                preview.setPaintFlags(0);
+                textView.setPaintFlags(0);
+                deselected(text_style_underline);
+                underLineText = false;
+            } else {
+                preview.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                textView.setPaintFlags(Paint.UNDERLINE_TEXT_FLAG);
+                selected(text_style_underline);
+                underLineText = true;
             }
         });
 
-        color_picker.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
+        assert color_picker != null;
+        color_picker.setOnClickListener(v ->
                 new ColorPickerDialog.Builder(EditorActivity.this)
                         .setTitle("Select a color")
                         .setPreferenceName("MyColorPickerDialog")
                         .setPositiveButton("Confirm",
-                                new ColorEnvelopeListener() {
-                                    @Override
-                                    public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
-                                        preview.setTextColor(envelope.getColor());
-                                        textView.setTextColor(envelope.getColor());
-                                        textStyleBuilder.setText_color(envelope.getColor());
-                                        setColor_box(envelope.getColor(), color_box);
-                                    }
+                                (ColorEnvelopeListener) (envelope, fromUser) -> {
+                                    preview.setTextColor(envelope.getColor());
+                                    textView.setTextColor(envelope.getColor());
+                                    textStyleBuilder.setText_color(envelope.getColor());
+                                    setColor_box(envelope.getColor(), color_box);
                                 })
                         .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
+                                (dialogInterface, i) -> dialogInterface.dismiss())
                         .attachAlphaSlideBar(true)
                         .attachBrightnessSlideBar(true)
-                        .show();
+                        .show());
 
+        assert text_background_bt != null;
+        text_background_bt.setOnClickListener(v -> {
+
+            if (textBg) {
+
+                preview.setBackground(null);
+                textView.setBackground(null);
+                textStyleBuilder.setHasBg(false);
+                textBg = false;
+
+                return;
             }
+
+            textBg = true;
+
+            addTextBg(bgColor, preview, textView);
+            textStyleBuilder.setHasBg(true);
+            textStyleBuilder.setBg_color(bgColor);
+
         });
 
-        text_background_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (textBg){
-
-                    preview.setBackground(null);
-                    textView.setBackground(null);
-                    textStyleBuilder.setHasBg(false);
-                    textBg = false;
-
-                    return;
-                }
-
-                textBg = true;
-
-                addTextBg(bgColor, preview, textView);
-                textStyleBuilder.setHasBg(true);
-                textStyleBuilder.setBg_color(bgColor);
-
-            }
-        });
-
-        text_background_color_bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        assert text_background_color_bt != null;
+        text_background_color_bt.setOnClickListener(v ->
                 new ColorPickerDialog.Builder(EditorActivity.this)
                         .setTitle("Select a color")
                         .setPreferenceName("MyColorPickerDialog")
                         .setPositiveButton("Confirm",
-                                new ColorEnvelopeListener() {
-                                    @Override
-                                    public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
-                                        addTextBg(envelope.getColor(), preview, textView);
-                                        textStyleBuilder.setHasBg(true);
-                                        textStyleBuilder.setBg_color(envelope.getColor());
-                                    }
+                                (ColorEnvelopeListener) (envelope, fromUser) -> {
+                                    addTextBg(envelope.getColor(), preview, textView);
+                                    textStyleBuilder.setHasBg(true);
+                                    textStyleBuilder.setBg_color(envelope.getColor());
                                 })
                         .setNegativeButton("Cancel",
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        dialogInterface.dismiss();
-                                    }
-                                })
+                                (dialogInterface, i) -> dialogInterface.dismiss())
                         .attachAlphaSlideBar(true)
                         .attachBrightnessSlideBar(true)
-                        .show();
+                        .show());
+
+        assert enable_advance != null;
+        assert text_padding_layout != null;
+        enable_advance.setOnClickListener(v -> {
+            if (text_padding_layout.getVisibility() == View.GONE) {
+                enable_advance.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_keyboard_arrow_up, 0);
+                text_padding_layout.setVisibility(View.VISIBLE);
+                return;
             }
+
+            enable_advance.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_keyboard_arrow_down, 0);
+            text_padding_layout.setVisibility(View.GONE);
+
         });
 
-        enable_advance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (text_padding_layout.getVisibility() == View.GONE){
-                    enable_advance.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_keyboard_arrow_up,0);
-                    text_padding_layout.setVisibility(View.VISIBLE);
-                    return;
-                }
-
-                enable_advance.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.ic_keyboard_arrow_down,0);
-                text_padding_layout.setVisibility(View.GONE);
-
-            }
-        });
-
-        switch_text_padding.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (switch_text_padding.isChecked()){
-                    text_padding_seekbar_all.setVisibility(View.VISIBLE);
-                    text_padding_seekbar_one_layout.setVisibility(View.GONE);
-                }else {
-                    text_padding_seekbar_all.setVisibility(View.GONE);
-                    text_padding_seekbar_one_layout.setVisibility(View.VISIBLE);
-                }
+        assert switch_text_padding != null;
+        assert text_padding_seekbar_all != null;
+        assert text_padding_seekbar_one_layout != null;
+        switch_text_padding.setOnClickListener(v -> {
+            if (switch_text_padding.isChecked()) {
+                text_padding_seekbar_all.setVisibility(View.VISIBLE);
+                text_padding_seekbar_one_layout.setVisibility(View.GONE);
+            } else {
+                text_padding_seekbar_all.setVisibility(View.GONE);
+                text_padding_seekbar_one_layout.setVisibility(View.VISIBLE);
             }
         });
 
         seekbarProgressText(text_padding_seekbar, preview, textView, text_padding_value, textStyleBuilder, "all");
 
-        seekbarProgressText(text_padding_seekbar_start, preview, textView, text_padding_value_start, textStyleBuilder,"start");
-        seekbarProgressText(text_padding_seekbar_end, preview, textView, text_padding_value_end, textStyleBuilder,"end");
-        seekbarProgressText(text_padding_seekbar_top, preview, textView, text_padding_value_top, textStyleBuilder,"top");
-        seekbarProgressText(text_padding_seekbar_bottom, preview, textView, text_padding_value_bottom, textStyleBuilder,"bottom");
+        seekbarProgressText(text_padding_seekbar_start, preview, textView, text_padding_value_start, textStyleBuilder, "start");
+        seekbarProgressText(text_padding_seekbar_end, preview, textView, text_padding_value_end, textStyleBuilder, "end");
+        seekbarProgressText(text_padding_seekbar_top, preview, textView, text_padding_value_top, textStyleBuilder, "top");
+        seekbarProgressText(text_padding_seekbar_bottom, preview, textView, text_padding_value_bottom, textStyleBuilder, "bottom");
 
 
-        bottomSheetDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                textStyleBuilder.setText(preview.getText().toString());
-                textStyleBuilder.setTypeface(preview.getTypeface());
-                textStyleBuilder.setPaintflags(preview.getPaintFlags());
-            }
+        bottomSheetDialog.setOnDismissListener(dialog -> {
+            textStyleBuilder.setText(preview.getText().toString());
+            textStyleBuilder.setTypeface(preview.getTypeface());
+            textStyleBuilder.setPaintflags(preview.getPaintFlags());
         });
 
         bottomSheetDialog.show();
@@ -1439,25 +1341,17 @@ public class EditorActivity extends AppCompatActivity implements View.OnTouchLis
 
     @Override
     public void onBackPressed() {
-        if (editing){
+        if (editing) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Are you sure");
             builder.setMessage("You have some unsaved changes, still want to go back ?");
 
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    EditorActivity.super.onBackPressed();
-                    dialog.dismiss();
-                }
+            builder.setPositiveButton("Yes", (dialog, which) -> {
+                EditorActivity.super.onBackPressed();
+                dialog.dismiss();
             });
 
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            builder.setNegativeButton("No", (dialog, which) -> dialog.dismiss());
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();

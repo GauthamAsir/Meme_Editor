@@ -1,15 +1,6 @@
 package a.gautham.neweditor.helper;
 
-import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.util.TypedValue;
-import android.widget.TextView;
-
-import androidx.core.content.res.ResourcesCompat;
-
-import a.gautham.neweditor.R;
 
 public class TextStyleBuilder {
 

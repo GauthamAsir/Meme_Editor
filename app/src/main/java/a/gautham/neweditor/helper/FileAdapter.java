@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 
-import com.google.android.material.card.MaterialCardView;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -44,7 +43,6 @@ public class FileAdapter extends ArrayAdapter<FileModel> {
         ImageView share_file = convertView.findViewById(R.id.share_file);
         TextView file_name = convertView.findViewById(R.id.file_name);
         TextView file_size = convertView.findViewById(R.id.file_size);
-        MaterialCardView rootCard = convertView.findViewById(R.id.rootCard);
 
         assert fileModel != null;
         Picasso.get().load(fileModel.getFile()).into(file_thumbnail);
@@ -52,45 +50,39 @@ public class FileAdapter extends ArrayAdapter<FileModel> {
         file_name.setText(fileModel.getName());
         file_size.setText(fileModel.getSize());
 
-        delete_file.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        delete_file.setOnClickListener(v -> {
 
-                if (fileModel.getFile().exists() && fileModel.getFile().delete()) {
-                    remove(fileModel);
-                }
+            if (fileModel.getFile().exists() && fileModel.getFile().delete()) {
+                remove(fileModel);
             }
         });
 
-        share_file.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        share_file.setOnClickListener(v -> {
 
-                Uri uri = FileProvider.getUriForFile(
-                        parent.getContext(),
-                        "a.gautham.neweditor.provider",
-                        fileModel.getFile());
+            Uri uri = FileProvider.getUriForFile(
+                    parent.getContext(),
+                    "a.gautham.neweditor.provider",
+                    fileModel.getFile());
 
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                if (fileModel.getName().endsWith(".jpeg")) {
-                    shareIntent.setType("image/jpg");
-                } else {
-                    shareIntent.setType("image/png");
-                }
-                shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                Intent chooser = Intent.createChooser(shareIntent, "Share image");
-
-                List<ResolveInfo> resInfoList = parent.getContext().getPackageManager()
-                        .queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
-
-                for (ResolveInfo resolveInfo : resInfoList) {
-                    String packageName = resolveInfo.activityInfo.packageName;
-                    parent.getContext().grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                }
-
-                parent.getContext().startActivity(chooser);
-
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            if (fileModel.getName().endsWith(".jpeg")) {
+                shareIntent.setType("image/jpg");
+            } else {
+                shareIntent.setType("image/png");
             }
+            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            Intent chooser = Intent.createChooser(shareIntent, "Share image");
+
+            List<ResolveInfo> resInfoList = parent.getContext().getPackageManager()
+                    .queryIntentActivities(chooser, PackageManager.MATCH_DEFAULT_ONLY);
+
+            for (ResolveInfo resolveInfo : resInfoList) {
+                String packageName = resolveInfo.activityInfo.packageName;
+                parent.getContext().grantUriPermission(packageName, uri, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            }
+
+            parent.getContext().startActivity(chooser);
+
         });
 
         return convertView;

@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     private String getPathFromUri(Uri uri) {
         String[] filePathColumn = {MediaStore.Files.FileColumns.DATA};
         Cursor cursor = getContentResolver().query(uri, filePathColumn, null, null, null);
+        assert cursor != null;
         cursor.moveToFirst();
         int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
         String Path = cursor.getString(columnIndex);

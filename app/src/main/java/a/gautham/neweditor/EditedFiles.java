@@ -13,7 +13,6 @@ import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import a.gautham.neweditor.helper.FileAdapter;
@@ -85,34 +84,22 @@ public class EditedFiles extends AppCompatActivity {
                 }
 
                 if (list.size() > 0) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            FileAdapter fileAdapter = new FileAdapter(EditedFiles.this, list);
-                            listView.setAdapter(fileAdapter);
-                            fileAdapter.notifyDataSetChanged();
-                            progressBar.setVisibility(View.GONE);
-                        }
+                    runOnUiThread(() -> {
+                        FileAdapter fileAdapter = new FileAdapter(EditedFiles.this, list);
+                        listView.setAdapter(fileAdapter);
+                        fileAdapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
                     });
                 } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            noFiles();
-                        }
-                    });
+                    runOnUiThread(() -> noFiles());
                 }
 
             }
 
             private void addFiles(File[] filesArray) {
 
-                Arrays.sort(filesArray, new Comparator<File>() {
-                    @Override
-                    public int compare(File o1, File o2) {
-                        return Long.compare((o2).lastModified(), (o1).lastModified());
-                    }
-                });
+                Arrays.sort(filesArray, (o1, o2) ->
+                        Long.compare((o2).lastModified(), (o1).lastModified()));
                 for (File file1 : filesArray) {
                     if (!file1.isDirectory()) {
                         FileModel fileModel = new FileModel(
