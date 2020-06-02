@@ -250,6 +250,11 @@ public class ReSize extends AppCompatActivity implements View.OnClickListener {
         switch (item.getItemId()) {
             case R.string.share:
 
+                if (name == null) {
+                    Toast.makeText(this, "No Changes were made", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+
                 Uri uri = FileProvider.getUriForFile(
                         getApplicationContext(),
                         "a.gautham.neweditor.provider",
